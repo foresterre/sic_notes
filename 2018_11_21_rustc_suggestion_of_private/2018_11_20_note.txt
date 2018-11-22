@@ -1,0 +1,4 @@
+rustc suggested to use
+-> image::dynimage::DynamicImage::ImageRgb8(image.to_rgb())
+however that module is private. Instead the member of the enum DynamicImage should be used directly like:
+-> image::DynamicImage::ImageRgb8(image.to_rgb())
