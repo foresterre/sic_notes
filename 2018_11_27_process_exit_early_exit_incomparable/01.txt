@@ -1,0 +1,27 @@
+Because I used process::exit/1 within some of the manually constructed pipeline steps, 
+if an option like `sic -H index` is provided, it prints the user manual index 
+and then exits, without returning a value or if a test case is provided
+before even running the `assert_eq!(expected, actual)`.
+
+This is inconvenient because now I am not sure whether the process succeeded or not. 
+I should tests whether `sic -H` returns with exitcode 0 or not. If not I can at a minimum
+test on the returned exit code.
+
+It would be better if I had a pipeline with PipelineStage[s] which are iterable.
+The major 'flaw' of my current system is that I return a type T, for which the length is not known at compile time.
+As such I can't do something like (simplified):
+
+enum Stage<T> {
+  Mut(ProcessMutWithConfig<T>)
+  Immut(ProcessWithConfig<T>)
+}
+
+type PipelineStageTrain = Vec<Stage>
+
+Taking T as associated type doesn't make a difference for this.
+
+* Q1 There should be a better way to store a result of a previous stage, such that it can be used as input for a next stage (maybe not necessarily the immediate next one (?))
+* Q2 In general: how to have an interable, usable according sic's requirements, pipeline
+* Q3 Can/should we use Box<T> as return type
+* Q4 Is it possible to define a general return type for Process[Mut]WithConfig without locking in?
+* Q5 How about trait bounds? or taking sastisfactory closures?
