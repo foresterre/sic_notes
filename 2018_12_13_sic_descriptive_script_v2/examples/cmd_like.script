@@ -1,0 +1,60 @@
+;
+; possibly just make heavy use of the scanner
+; we don't need to be anything even close to Turing complete after all.
+;
+; scanner would produce
+; ParserExpr:
+; - Command <~ ("blur" | "brighten " | "contrast" | ...)
+; - List(ParserExpr) <~ "( ... )"
+; - Float
+; - Int
+; - Symbol(String) <~ ":<...symbol_name...>"
+; and possibly - KeyValue(String, ParserExpr)
+;                or even a simple Table/Map/Dict
+;
+; \n could be implcit for ,
+; same for ;
+;
+; perhaps just require ; between each command?
+; ^ for clarity "HERE the current command ends!"
+;   both for the writer and reader
+
+```
+blur 10;
+flipv;
+resize 40 40;
+resize (50 50) {sampling: gaus};
+# note that { ... } here is an optional KeyValue pair, not a body; also note that resize 30 30 and resize (30 30) are the same function, but resize (30 30) would destructure to 30 30
+# perhaps  sampling could be an object
+paint (
+    arrow (10 10) (20 20),
+    circle {}
+
+)
+```
+; not the best of names, but:
+; Value
+; | ImageBufferV
+; | ObjectV
+;
+; Where ImageBufferV can be a result, but ObjectV can not
+; i.e. each script would need to evaluate to an ImageBufferV
+;
+; then Sampling can be an (built in / accepted by the scanner (?)) object like:
+; def sampling <- :gaus | :linmap | ...
+;
+; resize
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;

@@ -1,0 +1,51 @@
+The current script was made because ordering of certain commands matter.
+For example, given an input image with a suitable large size,
+the following scripts A and B may produce different images:
+A =
+```
+blur 100
+resize 50 50  
+```
+
+B =
+```
+resize 50 50
+blur 100
+```
+
+If you would use just  cli options and flags, then:
+`sic input.jpg output.jpg --resize 50 50 --blur 100` == `sic input.jpg output.jpg --blur 100 --resize 50 50`
+
+We could take the ordering of cli options and flags into account, but it is not registered as far as I know by Clap, so
+a different argument parser would be needed.
+
+Because cli options and flags are accessible, and if you wouldn't care about no guaranteed ordering, sic will provide these commands
+in 0.9.0 (hopefully ;-)); but that's a different topic.
+
+The current "script" is made to be simple in usage and to look a lot like what a cli flag or option would've looked like.
+
+I do think however it would be interesting to make a (probably not turing complete) language around image operations.
+Perhaps it won't be part of the sic project ever; Definitely not in its initial prototype version.
+But for the case that it will either replace the --script option or complement it, I would prefer to have a syntax which 
+is at least similar to sic's current "ordered list of commands".
+
+
+For sic, I do need to figure out something like optional arguments (like for resize, which sampling should be used? By default as of now
+it is Gaussian, but it would be great if you could change that by adding something like `resize 50 50 (sampling gaus, other_optional, another 40 40)` 
+so `(\(optional <values>\))(,\(optional <values>\))*` 
+
+
+Some other scribbles:
+
+(paint (arrow (from = (x=30, y=30), to = (x=50, y = 50))
+(paint (arrow (from = (30, 30), to = (50, 50))
+^ a name can be given optionally, but the order stays the same
+
+(paint (arrow (from = (x=30, y=30), to = (x=50, y = 50), *color=(r=255, g=255, b=255), *width=(1))))
+^ optional arguments after required ones and marked with *
+
+ 
+
+
+
+

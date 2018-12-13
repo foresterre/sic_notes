@@ -1,0 +1,84 @@
+; implicitly loads the image;
+; uses an  s-expressions like syntax
+; implicitly defines (script (...) )
+;
+;
+; scanner str -> SExpr
+; enum SExpr<'a> {
+;   SInt(i32),
+;   SFloat(f32),
+;   SSym(s: &'a str),  // or SString
+;   SList(expr: Box<SExpr>),
+; }
+; parser SExpr -> Expr
+; enum Expr {
+;   ...
+;}
+;
+; do we care to desugar?
+;
+; interpreter: Expr -> Value
+; enum Value {
+;    Closure(fundef, environment),
+;    Integer(i32),
+;    Float(f32),
+;    Bool(boolean),
+;    NonEval,
+; }
+;
+; NotEval {
+;   ImageBuffer(DynamicImageBuffer),
+; }
+;
+;
+; some fancy name: Value -> ImageBuffer<'a>
+;
+;
+; syntax:
+; sexpr := (integer | float | symbol | list)
+; integer := regex: `[+-]?[0-9]+` to: SInt(n.parse::<i32>())
+; float := regex: `[+-]?([0-9]+[.])?[0-9]+` to: SFloat(n::parse::<f32>())
+; symbol := regex: `([^()0-9\s][\w]*)` to SSym(n::parse::<&str>()) ; syntax depends whether order of matching matters or not
+; list := regex: `(\(([^()]+)\))` where the subgroup should match another sexpr to: SList
+;
+;
+; The script commands would be builtins
+; Possibly they would return something like ImageBuffer
+;
+;
+; Should always return an ImageBuffer
+; If we would allow multi image inputs in the future this
+; may clash; then script may require something like Either<ImageBuffer, Vec<ImageBuffer>>
+; or just Vec<ImageBuffer> with ImageBuffer as vec.len() == 1
+;
+;
+;(script
+; perhaps the first list should also be implicit
+;(
+    (let
+        (
+            (x 10)
+            (pi 3.14)
+            (abs fn (a)
+                (if (< a 0)
+                    (- a)
+                    a
+                )
+            )
+        )
+        (
+            (blur x)
+            fliph
+            (huerotate
+                (- (builtin::to_int (* 0.15 pi)))
+            )
+            (if false
+
+            )
+
+        )
+    )
+
+
+;)
+;)
